@@ -30,14 +30,14 @@ blogRouter.put('/:id', authMiddleware, async (req, res) => {
 blogRouter.delete('/:id', authMiddleware, async (req, res) => {
     const blog = await Blog.findById(req.params.id);
     if (blog.author.toString() !== req.user.id) return res.status(403).send('Access denied');
-    await blog.remove();
+    await blog.deleteOne();
     res.send('Blog deleted');
 });
 
 // Gérer les articles par un administrateur
 blogRouter.delete('/admin/:id', [authMiddleware, adminMiddleware], async (req, res) => {
     const blog = await Blog.findById(req.params.id);
-    await blog.remove();
+    await blog.deleteOne();
     res.send('Blog deleted by admin');
 });
 
